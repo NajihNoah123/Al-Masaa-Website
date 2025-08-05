@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al Masaa Al Baydha Typing Center - PRO Services UAE</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Poppins & Tajawal for Arabic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    <!-- Custom Tailwind Config & Styles -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                        tajawal: ['Tajawal', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-blue': {
+                            DEFAULT: '#0D47A1',
+                            dark: '#0A3A82',
+                            light: '#E3F2FD'
+                        },
+                        'brand-accent': {
+                            DEFAULT: '#1E88E5',
+                            dark: '#1565C0'
+                        },
+                        'brand-gold': '#FFC107',
+                        'brand-light': '#F8F9FA',
+                        'brand-dark': '#212529',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Poppins', 'sans-serif';
+            background-color: theme('colors.brand.light');
+        }
+        /* Apply Tajawal font when in Arabic */
+        body.lang-ar {
+            font-family: 'Tajawal', 'sans-serif';
+        }
+        .nav-link {
+            transition: color 0.3s ease, transform 0.2s ease;
+            font-weight: 500;
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: theme('colors.brand.accent.DEFAULT');
+            transition: width 0.3s ease;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: theme('colors.brand.accent.DEFAULT');
+        }
+        .nav-link.active::after, .nav-link:hover::after {
+            width: 100%;
+        }
+        .page-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .page-section.active {
+            display: block;
+            opacity: 1;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out, padding 0.4s ease;
+            padding: 0 1.5rem;
+        }
+        .service-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e0e0e0;
+        }
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-color: theme('colors.brand.accent.DEFAULT');
+        }
+        #rating-bar {
+            width: 0%;
+            transition: width 1.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        /* Scroll Animation styles */
+        [data-animate] {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        [data-animate].is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* RTL adjustments */
+        html[dir="rtl"] .nav-link::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body class="text-brand-dark">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-brand-blue flex items-center" data-page="home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2 text-brand-accent" viewBox="0 0 20 20" fill="currentColor"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" /></svg>
+                <span data-key="brandName">Al Masaa Al Baydha</span>
+            </a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#" class="nav-link" data-page="home" data-key="navHome">Home</a>
+                <a href="#" class="nav-link" data-page="services" data-key="navServices">Services</a>
+                <a href="#" class="nav-link" data-page="reviews" data-key="navReviews">Reviews</a>
+                <a href="#" class="nav-link" data-page="faq" data-key="navFAQ">FAQ</a>
+                <a href="#" class="nav-link" data-page="about" data-key="navAbout">About Us</a>
+                <a href="#" class="nav-link" data-page="contact" data-key="navContact">Contact</a>
+                <button id="lang-switcher" class="font-semibold text-brand-blue hover:text-brand-accent transition-colors">العربية</button>
+            </div>
+            <div class="md:hidden flex items-center">
+                <button id="mobile-menu-button" class="text-brand-blue focus:outline-none">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <a href="#" class="nav-link block py-3 px-6 text-base" data-page="home" data-key="navHomeMobile">Home</a>
+            <a href="#" class="nav-link block py-3 px-6 text-base" data-page="services" data-key="navServicesMobile">Services</a>
+            <a href="#" class="nav-link block py-3 px-6 text-base" data-page="reviews" data-key="navReviewsMobile">Reviews</a>
+            <a href="#" class="nav-link block py-3 px-6 text-base" data-page="faq" data-key="navFAQMobile">FAQ</a>
+            <a href="#" class="nav-link block py-3 px-6 text-base" data-page="about" data-key="navAboutMobile">About Us</a>
+            <a href="#" class="nav-link block py-3 px-6 text-base" data-page="contact" data-key="navContactMobile">Contact</a>
+            <button id="lang-switcher-mobile" class="w-full text-left font-semibold text-brand-blue hover:text-brand-accent transition-colors py-3 px-6 text-base">العربية</button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+        <!-- All Page Sections will be inserted here by JavaScript -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-brand-blue-dark text-white">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p data-key="footerRights">© 2025 Al Masaa Al Baydha Typing Center. All Rights Reserved.</p>
+            <p class="text-sm text-blue-200 mt-2" data-key="footerSlogan">Your reliable partner for all PRO and typing services in the UAE.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Dynamic Content and Interactions -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            // --- DATA ---
+            const servicesData = {
+                "trade-license": {
+                    title: { en: "Trade License Services (New/Renewal)", ar: "خدمات الرخص التجارية (جديدة/تجديد)" },
+                    emoji: "📜",
+                    description: { en: "Full support for acquiring new trade licenses and ensuring timely renewals to keep your business compliant. We handle all paperwork with the Department of Economic Development (DED) and other authorities.", ar: "دعم كامل للحصول على رخص تجارية جديدة وضمان التجديد في الوقت المناسب للحفاظ على امتثال عملك. نحن نتعامل مع جميع الإجراءات الورقية مع دائرة التنمية الاقتصادية (DED) والسلطات الأخرى." },
+                    time: { en: "5-7 Business Days", ar: "5-7 أيام عمل" },
+                    steps: { en: ["Initial consultation and document collection.", "Trade name reservation and initial approval.", "Preparation of Memorandum of Association (MOA).", "Submission to DED and payment of fees.", "Issuance of final trade license."], ar: ["استشارة أولية وجمع المستندات.", "حجز الاسم التجاري والموافقة المبدئية.", "إعداد عقد التأسيس.", "التقديم لدائرة التنمية الاقتصادية ودفع الرسوم.", "إصدار الرخصة التجارية النهائية."] },
+                    requirements: { en: ["Passport copies of all partners/shareholders.", "Copy of Emirates ID (if applicable).", "Tenancy contract (Ejari) for the office.", "No Objection Certificate (NOC) if required."], ar: ["نسخ من جوازات سفر جميع الشركاء/المساهمين.", "نسخة من بطاقة الهوية الإماراتية (إن وجدت).", "عقد الإيجار (إيجاري) للمكتب.", "شهادة عدم ممانعة (إذا لزم الأمر)."] }
+                },
+                "business-setup": {
+                    title: { en: "Business Setup / PRO Services", ar: "تأسيس الأعمال / خدمات مندوب الشركات" },
+                    emoji: "🏢",
+                    description: { en: "Expert guidance through every step of setting up your business, including all necessary PRO documentation for mainland and free zone companies.", ar: "إرشادات الخبراء في كل خطوة من خطوات تأسيس عملك، بما في ذلك جميع وثائق المندوب اللازمة لشركات البر الرئيسي والمناطق الحرة." },
+                    time: { en: "Varies based on complexity", ar: "يختلف حسب التعقيد" },
+                    steps: { en: ["Activity and jurisdiction consultation.", "Complete documentation and legal paperwork.", "Obtaining necessary external approvals.", "Company registration and license issuance.", "Post-setup support (bank account, visas)."], ar: ["استشارة بشأن النشاط والولاية القضائية.", "إكمال الوثائق والأوراق القانونية.", "الحصول على الموافقات الخارجية اللازمة.", "تسجيل الشركة وإصدار الرخصة.", "دعم ما بعد التأسيس (حساب بنكي، تأشيرات)."] },
+                    requirements: { en: ["Detailed business plan.", "Passport and visa copies of founders.", "Proof of address.", "Educational certificates (for some professional licenses)."], ar: ["خطة عمل مفصلة.", "نسخ من جوازات سفر وتأشيرات المؤسسين.", "إثبات العنوان.", "شهادات علمية (لبعض الرخص المهنية)."] }
+                },
+                "immigration-tasheel": {
+                    title: { en: "Immigration and Tasheel Services", ar: "خدمات الهجرة وتسهيل" },
+                    emoji: "✈️",
+                    description: { en: "Handling all Tasheel (Ministry of Human Resources) and Immigration (GDRFA) related transactions efficiently to save you time and effort.", ar: "التعامل مع جميع معاملات تسهيل (وزارة الموارد البشرية) والهجرة (GDRFA) بكفاءة لتوفير وقتك وجهدك." },
+                    time: { en: "1-2 Business Days", ar: "1-2 أيام عمل" },
+                    steps: { en: ["Application preparation and typing.", "Submission to the relevant portal (Tasheel/GDRFA).", "Tracking application status.", "Delivery of completed transaction documents."], ar: ["إعداد الطلب وطباعته.", "التقديم عبر البوابة ذات الصلة (تسهيل/GDRFA).", "تتبع حالة الطلب.", "تسليم مستندات المعاملة المكتملة."] },
+                    requirements: { en: ["Company documents (Trade License, Establishment Card).", "Employee/Applicant documents (Passport, Visa, etc.).", "Specific requirements vary per transaction."], ar: ["مستندات الشركة (الرخصة التجارية، بطاقة المنشأة).", "مستندات الموظف/المتقدم (جواز السفر، التأشيرة، إلخ).", "تختلف المتطلبات المحددة لكل معاملة."] }
+                },
+                "visa-residence": {
+                    title: { en: "Online Visa and Residence (Complete Process)", ar: "التأشيرة والإقامة عبر الإنترنت (عملية كاملة)" },
+                    emoji: "🛂",
+                    description: { en: "A-to-Z processing of online applications for new employment visas, family residence visas, renewals, and cancellations. We ensure a smooth and fast process.", ar: "معالجة شاملة للطلبات عبر الإنترنت لتأشيرات العمل الجديدة، وتأشيرات الإقامة العائلية، والتجديدات، والإلغاء. نضمن عملية سلسة وسريعة." },
+                    time: { en: "7-10 Business Days", ar: "7-10 أيام عمل" },
+                    steps: { en: ["Entry permit application.", "In-country status change (if applicable).", "Medical test and Emirates ID biometrics.", "Visa stamping in the passport.", "Issuance of Emirates ID card."], ar: ["طلب تصريح الدخول.", "تغيير الوضع داخل الدولة (إن وجد).", "الفحص الطبي وبصمات الهوية الإماراتية.", "ختم التأشيرة في جواز السفر.", "إصدار بطاقة الهوية الإماراتية."] },
+                    requirements: { en: ["Applicant's passport copy (6 months validity).", "Passport-size photograph with white background.", "Sponsor's passport, visa, and Emirates ID copy.", "Attested marriage/birth certificates for family visas."], ar: ["نسخة من جواز سفر المتقدم (صلاحية 6 أشهر).", "صورة شخصية بحجم جواز السفر بخلفية بيضاء.", "نسخة من جواز سفر الكفيل وتأشيرته وبطاقة هويته الإماراتية.", "شهادات زواج/ميلاد مصدقة للتأشيرات العائلية."] }
+                },
+                "certificate-attestation": {
+                    title: { en: "Certificate Attestation", ar: "تصديق الشهادات" },
+                    emoji: "🎓",
+                    description: { en: "Reliable attestation services for educational, marriage, birth, and commercial documents for legal use within the UAE. We manage the entire chain of authentication.", ar: "خدمات تصديق موثوقة للوثائق التعليمية والزواج والميلاد والتجارية للاستخدام القانوني داخل الإمارات. ندير سلسلة المصادقة بأكملها." },
+                    time: { en: "Varies by country of origin", ar: "يختلف حسب بلد المنشأ" },
+                    steps: { en: ["Notary public verification in the home country.", "Authentication from the Ministry of Foreign Affairs in the home country.", "Attestation from the UAE Embassy in the home country.", "Final attestation from the Ministry of Foreign Affairs (MOFA) in the UAE."], ar: ["توثيق كاتب العدل في بلد المنشأ.", "مصادقة وزارة الخارجية في بلد المنشأ.", "تصديق سفارة الإمارات في بلد المنشأ.", "التصديق النهائي من وزارة الخارجية في الإمارات."] },
+                    requirements: { en: ["Original certificate/document.", "Passport copy of the document holder."], ar: ["الشهادة/الوثيقة الأصلية.", "نسخة من جواز سفر صاحب الوثيقة."] }
+                },
+                "medical-emirates-id": {
+                    title: { en: "Medical and Emirates ID Services", ar: "خدمات الفحص الطبي والهوية الإماراتية" },
+                    emoji: "🩺",
+                    description: { en: "Assistance with scheduling medical tests and processing new or renewal applications for Emirates ID cards, ensuring all steps are completed correctly.", ar: "المساعدة في جدولة الفحوصات الطبية ومعالجة طلبات بطاقات الهوية الإماراتية الجديدة أو المجددة، مع ضمان إكمال جميع الخطوات بشكل صحيح." },
+                    time: { en: "3-5 Business Days", ar: "3-5 أيام عمل" },
+                    steps: { en: ["Typing of medical and Emirates ID application forms.", "Guidance on locating the nearest approved centers.", "Scheduling appointments.", "Tracking the status of the Emirates ID card delivery."], ar: ["طباعة استمارات الفحص الطبي والهوية الإماراتية.", "إرشادات حول تحديد أقرب المراكز المعتمدة.", "جدولة المواعيد.", "تتبع حالة تسليم بطاقة الهوية الإماراتية."] },
+                    requirements: { en: ["Original Passport.", "Valid Residence Visa/Entry Permit.", "Passport-size photograph."], ar: ["جواز السفر الأصلي.", "تأشيرة إقامة/تصريح دخول ساري المفعول.", "صورة شخصية بحجم جواز السفر."] }
+                },
+                "tenancy-contract": {
+                    title: { en: "Tenancy Contract (Ejari) Typing", ar: "طباعة عقد الإيجار (إيجاري)" },
+                    emoji: "📄",
+                    description: { en: "Fast and accurate typing and registration of your tenancy contracts through the official Ejari system, a mandatory requirement for many official transactions in Dubai.", ar: "طباعة وتسجيل عقود الإيجار الخاصة بك بسرعة ودقة من خلال نظام إيجاري الرسمي، وهو مطلب إلزامي للعديد من المعاملات الرسمية في دبي." },
+                    time: { en: "1 Business Day", ar: "1 يوم عمل" },
+                    steps: { en: ["Collection of required documents.", "Typing and preparing the Ejari application.", "Uploading to the official portal.", "Issuance of the registered Ejari certificate."], ar: ["جمع المستندات المطلوبة.", "طباعة وإعداد طلب إيجاري.", "التحميل على البوابة الرسمية.", "إصدار شهادة إيجاري المسجلة."] },
+                    requirements: { en: ["Tenant's Passport, Visa, and Emirates ID copy.", "Landlord's Passport copy.", "Title Deed of the property.", "DEWA bill."], ar: ["نسخة من جواز سفر المستأجر وتأشيرته وبطاقة هويته الإماراتية.", "نسخة من جواز سفر المالك.", "سند ملكية العقار.", "فاتورة ديوا."] }
+                },
+                "family-visa": {
+                    title: { en: "UAE Family Visa Services", ar: "خدمات تأشيرة الأسرة في الإمارات" },
+                    emoji: "👨‍👩‍👧‍�",
+                    description: { en: "Complete support for sponsoring your spouse, children, and parents. We guide you through the entire process, from document attestation to final visa stamping.", ar: "دعم كامل لكفالة زوجتك وأطفالك ووالديك. نوجهك خلال العملية بأكملها، من تصديق المستندات إلى ختم التأشيرة النهائي." },
+                    time: { en: "10-15 Business Days", ar: "10-15 أيام عمل" },
+                    steps: { en: ["Document attestation check.", "Application typing and submission.", "Medical and Emirates ID process for dependents.", "Visa stamping for family members."], ar: ["التحقق من تصديق المستندات.", "طباعة الطلب وتقديمه.", "عملية الفحص الطبي والهوية الإماراتية للمعالين.", "ختم التأشيرة لأفراد الأسرة."] },
+                    requirements: { en: ["Sponsor's Passport, Visa, Emirates ID, and Salary Certificate.", "Attested Marriage/Birth Certificates.", "Tenancy Contract (Ejari).", "Bank statements (if required)."], ar: ["جواز سفر الكفيل وتأشيرته وبطاقة هويته الإماراتية وشهادة الراتب.", "شهادات زواج/ميلاد مصدقة.", "عقد الإيجار (إيجاري).", "كشوف حسابات بنكية (إذا لزم الأمر)."] }
+                },
+                "visa-stamping": {
+                    title: { en: "Immigration Submission for Visa Stamping", ar: "تقديم طلب ختم التأشيرة للهجرة" },
+                    emoji: "✅",
+                    description: { en: "Managing the final, crucial step of submitting your passport for residence visa stamping at the immigration department after all other procedures are complete.", ar: "إدارة الخطوة الأخيرة والحاسمة لتقديم جواز سفرك لختم تأشيرة الإقامة في إدارة الهجرة بعد اكتمال جميع الإجراءات الأخرى." },
+                    time: { en: "2-3 Business Days", ar: "2-3 أيام عمل" },
+                    steps: { en: ["Ensuring all prerequisites are met (medical passed, ID application complete).", "Submitting the passport and application to immigration.", "Collecting the passport after the visa has been stamped."], ar: ["التأكد من استيفاء جميع المتطلبات المسبقة (اجتياز الفحص الطبي، اكتمال طلب الهوية).", "تقديم جواز السفر والطلب إلى الهجرة.", "استلام جواز السفر بعد ختم التأشيرة."] },
+                    requirements: { en: ["Original Passport.", "Medical fitness report.", "Emirates ID application receipt.", "Copy of sponsor's documents."], ar: ["جواز السفر الأصلي.", "تقرير اللياقة الطبية.", "إيصال طلب بطاقة الهوية الإماراتية.", "نسخة من مستندات الكفيل."] }
+                },
+                "vehicle-moi": {
+                    title: { en: "Vehicle (MOI) - Online Services", ar: "خدمات المركبات (وزارة الداخلية) عبر الإنترنت" },
+                    emoji: "🚗",
+                    description: { en: "Convenient online processing for vehicle registration (Mulkia) renewal and payment of traffic fines through the Ministry of Interior (MOI) platform.", ar: "معالجة مريحة عبر الإنترنت لتجديد تسجيل المركبات (ملكية) ودفع المخالفات المرورية من خلال منصة وزارة الداخلية." },
+                    time: { en: "Same Day", ar: "في نفس اليوم" },
+                    steps: { en: ["Checking for outstanding fines.", "Processing insurance for the vehicle.", "Submitting renewal application online.", "Issuance of digital Mulkia."], ar: ["التحقق من المخالفات القائمة.", "معالجة تأمين المركبة.", "تقديم طلب التجديد عبر الإنترنت.", "إصدار ملكية رقمية."] },
+                    requirements: { en: ["Emirates ID.", "Old vehicle registration card (Mulkia).", "Valid vehicle insurance policy."], ar: ["بطاقة الهوية الإماراتية.", "بطاقة تسجيل المركبة القديمة (ملكية).", "بوليصة تأمين سارية للمركبة."] }
+                },
+                "driving-license": {
+                    title: { en: "Driving License Online Apply (New & Renewal)", ar: "طلب رخصة القيادة عبر الإنترنت (جديدة وتجديد)" },
+                    emoji: "💳",
+                    description: { en: "Assistance with opening a new driving file for beginners or renewing your existing UAE driving license online, including eye tests and related procedures.", ar: "المساعدة في فتح ملف قيادة جديد للمبتدئين أو تجديد رخصة القيادة الإماراتية الحالية عبر الإنترنت، بما في ذلك اختبارات النظر والإجراءات ذات الصلة." },
+                    time: { en: "1-2 Business Days", ar: "1-2 أيام عمل" },
+                    steps: { en: ["Eye test arrangement.", "Opening a traffic file online (for new drivers).", "Submitting the renewal application online.", "Guidance on theory/practical test scheduling (for new drivers)."], ar: ["ترتيب اختبار النظر.", "فتح ملف مروري عبر الإنترنت (للسائقين الجدد).", "تقديم طلب التجديد عبر الإنترنت.", "إرشادات حول جدولة الاختبار النظري/العملي (للسائقين الجدد)."] },
+                    requirements: { en: ["Emirates ID.", "Passport and Visa copy.", "Eye test result.", "No Objection Certificate (NOC) from sponsor (if required)."], ar: ["بطاقة الهوية الإماراتية.", "نسخة من جواز السفر والتأشيرة.", "نتيجة اختبار النظر.", "شهادة عدم ممانعة من الكفيل (إذا لزم الأمر)."] }
+                }
+            };
+
+            const faqData = {
+                "General Questions": {
+                    title: { en: "General Questions", ar: "أسئلة عامة" },
+                    questions: [
+                        { q: { en: "What are your working hours?", ar: "ما هي ساعات العمل لديكم؟" }, a: { en: "We are open from 9 AM to 9:30 PM, Saturday to Thursday. On Fridays, we work from 9 AM to 11:30 AM and 4:30 PM to 9:30 PM.", ar: "نحن نعمل من الساعة 9 صباحًا حتى 9:30 مساءً، من السبت إلى الخميس. وفي أيام الجمعة، نعمل من 9 صباحًا حتى 11:30 صباحًا ومن 4:30 مساءً حتى 9:30 مساءً." } },
+                        { q: { en: "What payment methods do you accept?", ar: "ما هي طرق الدفع التي تقبلونها؟" }, a: { en: "We accept cash, bank transfers, and all major credit/debit cards.", ar: "نقبل الدفع نقدًا، والتحويلات البنكية، وجميع بطاقات الائتمان/الخصم الرئيسية." } },
+                        { q: { en: "Where are you located?", ar: "أين يقع مكتبكم؟" }, a: { en: "Our office is conveniently located in Maleha St, Industrial Area 10, Sharjah, near the Jeco signal.", ar: "يقع مكتبنا في موقع مناسب في شارع مليحة، المنطقة الصناعية 10، الشارقة، بالقرب من إشارة جيكو." } },
+                        { q: { en: "Do you provide services for all Emirates?", ar: "هل تقدمون خدمات لجميع الإمارات؟" }, a: { en: "Yes, while our main office is in Sharjah, we provide PRO and document clearing services for all major free zones and mainland authorities across the UAE.", ar: "نعم، على الرغم من أن مكتبنا الرئيسي في الشارقة، إلا أننا نقدم خدمات المندوب وتخليص المعاملات لجميع المناطق الحرة الرئيسية والسلطات في البر الرئيسي في جميع أنحاء الإمارات." } },
+                        { q: { en: "Who is the main contact person for inquiries?", ar: "من هو الشخص الرئيسي للاتصال للاستفسارات؟" }, a: { en: "You can contact our senior consultant, Niyas, at 055 630 5330 for any inquiries.", ar: "يمكنك الاتصال بمستشارنا الأول، نياس، على الرقم 055 630 5330 لأي استفسارات." } }
+                    ]
+                },
+                "Visa Services": {
+                    title: { en: "Visa Services", ar: "خدمات التأشيرات" },
+                    questions: [
+                        { q: { en: "What is the grace period after a residence visa is cancelled?", ar: "ما هي فترة السماح بعد إلغاء تأشيرة الإقامة؟" }, a: { en: "Typically, there is a 30-day grace period after visa cancellation to either exit the country or obtain a new visa.", ar: "عادة، هناك فترة سماح مدتها 30 يومًا بعد إلغاء التأشيرة إما لمغادرة البلاد أو الحصول على تأشيرة جديدة." } },
+                        { q: { en: "Can I convert my tourist visa to an employment visa inside the UAE?", ar: "هل يمكنني تحويل تأشيرتي السياحية إلى تأشيرة عمل داخل الإمارات؟" }, a: { en: "Yes, this is known as an 'in-country status change' and is possible for most nationalities, avoiding the need to exit the country.", ar: "نعم، يُعرف هذا بـ 'تغيير الوضع داخل الدولة' وهو ممكن لمعظم الجنسيات، مما يجنب الحاجة إلى مغادرة البلاد." } },
+                        { q: { en: "What are the basic requirements to sponsor my family?", ar: "ما هي المتطلبات الأساسية لكفالة عائلتي؟" }, a: { en: "You generally need a valid residence visa, a minimum salary (which varies), an attested marriage/birth certificate, and a tenancy contract (Ejari).", ar: "بشكل عام، تحتاج إلى تأشيرة إقامة سارية، وراتب بحد أدنى (يختلف)، وشهادة زواج/ميلاد مصدقة، وعقد إيجار (إيجاري)." } },
+                        { q: { en: "What happens if I overstay my visa?", ar: "ماذا يحدث إذا تجاوزت مدة الإقامة المسموح بها في تأشيرتي؟" }, a: { en: "Overstaying results in daily fines. It's crucial to renew your visa or exit the country before it expires to avoid penalties.", ar: "تجاوز مدة الإقامة يؤدي إلى غرامات يومية. من الضروري تجديد تأشيرتك أو مغادرة البلاد قبل انتهاء صلاحيتها لتجنب العقوبات." } },
+                        { q: { en: "How long is a UAE residence visa valid for?", ar: "ما هي مدة صلاحية تأشيرة الإقامة في الإمارات؟" }, a: { en: "Most residence visas are valid for 2 years, while some categories, like the Golden Visa, offer longer durations of 5 or 10 years.", ar: "معظم تأشيرات الإقامة صالحة لمدة عامين، بينما توفر بعض الفئات، مثل التأشيرة الذهبية، فترات أطول تصل إلى 5 أو 10 سنوات." } }
+                    ]
+                },
+                "Business Setup & PRO Services": {
+                    title: { en: "Business Setup & PRO Services", ar: "تأسيس الأعمال وخدمات المندوب" },
+                    questions: [
+                        { q: { en: "What is the difference between a mainland and a free zone company?", ar: "ما الفرق بين شركة في البر الرئيسي وشركة في منطقة حرة؟" }, a: { en: "A mainland company can conduct business anywhere in the UAE, while a free zone company is typically restricted to its specific free zone and international markets.", ar: "يمكن لشركة في البر الرئيسي ممارسة الأعمال التجارية في أي مكان في الإمارات، بينما تقتصر شركة المنطقة الحرة عادةً على منطقتها الحرة المحددة والأسواق الدولية." } },
+                        { q: { en: "Do I need a local Emirati sponsor for a mainland company?", ar: "هل أحتاج إلى كفيل إماراتي محلي لشركة في البر الرئيسي؟" }, a: { en: "Recent laws have allowed 100% foreign ownership for a wide range of business activities on the mainland, removing the need for a local sponsor in many cases.", ar: "سمحت القوانين الأخيرة بالملكية الأجنبية بنسبة 100% لمجموعة واسعة من الأنشطة التجارية في البر الرئيسي، مما يلغي الحاجة إلى كفيل محلي في كثير من الحالات." } },
+                        { q: { en: "What is an Establishment Card?", ar: "ما هي بطاقة المنشأة؟" }, a: { en: "An Establishment Card is a mandatory document that registers your company with the immigration authorities, allowing you to hire staff and apply for visas.", ar: "بطاقة المنشأة هي وثيقة إلزامية تسجل شركتك لدى سلطات الهجرة، مما يسمح لك بتوظيف الموظفين وتقديم طلبات التأشيرات." } },
+                        { q: { en: "How long does it take to get a trade license?", ar: "كم من الوقت يستغرق الحصول على رخصة تجارية؟" }, a: { en: "The process can take anywhere from a few days to a few weeks, depending on the business activity and the required approvals from government departments.", ar: "يمكن أن تستغرق العملية من بضعة أيام إلى بضعة أسابيع، اعتمادًا على النشاط التجاري والموافقات المطلوبة من الدوائر الحكومية." } },
+                        { q: { en: "Can you help with opening a corporate bank account?", ar: "هل يمكنكم المساعدة في فتح حساب بنكي للشركات؟" }, a: { en: "Yes, as part of our business setup services, we assist and guide you through the process of opening a corporate bank account.", ar: "نعم، كجزء من خدمات تأسيس الأعمال لدينا، نساعدك ونوجهك خلال عملية فتح حساب بنكي للشركات." } }
+                    ]
+                },
+                "Document Attestation & Typing": {
+                    title: { en: "Document Attestation & Typing", ar: "تصديق وطباعة المستندات" },
+                    questions: [
+                        { q: { en: "Why do I need to get my certificates attested?", ar: "لماذا أحتاج إلى تصديق شهاداتي؟" }, a: { en: "Attestation is the process of legalizing your documents (like degrees or marriage certificates) so they are officially recognized by the UAE government for visas, employment, and other official purposes.", ar: "التصديق هو عملية إضفاء الشرعية على مستنداتك (مثل الشهادات الجامعية أو شهادات الزواج) بحيث يتم الاعتراف بها رسميًا من قبل حكومة الإمارات العربية المتحدة للتأشيرات والتوظيف والأغراض الرسمية الأخرى." } },
+                        { q: { en: "What is an Ejari and why is it mandatory?", ar: "ما هو نظام إيجاري ولماذا هو إلزامي؟" }, a: { en: "Ejari is the official online registration system for all tenancy contracts in Dubai. It is required for residence visa applications, DEWA connections, and other official transactions.", ar: "إيجاري هو نظام التسجيل الرسمي عبر الإنترنت لجميع عقود الإيجار في دبي. وهو مطلوب لطلبات تأشيرة الإقامة، وتوصيلات هيئة كهرباء ومياه دبي، والمعاملات الرسمية الأخرى." } },
+                        { q: { en: "Can you type urgent applications?", ar: "هل يمكنكم طباعة الطلبات العاجلة؟" }, a: { en: "Yes, we offer urgent typing services for most applications to ensure they are processed as quickly as possible.", ar: "نعم، نحن نقدم خدمات طباعة عاجلة لمعظم الطلبات لضمان معالجتها في أسرع وقت ممكن." } },
+                        { q: { en: "What documents do you provide typing services for?", ar: "ما هي المستندات التي تقدمون لها خدمات الطباعة؟" }, a: { en: "We provide typing for a vast range of documents, including visa applications, Emirates ID forms, medical fitness tests, legal contracts, and more.", ar: "نحن نقدم خدمات الطباعة لمجموعة واسعة من المستندات، بما في ذلك طلبات التأشيرة، ونماذج بطاقة الهوية الإماراتية، واختبارات اللياقة الطبية، والعقود القانونية، والمزيد." } }
+                    ]
+                },
+                "Emirates ID & Medical": {
+                    title: { en: "Emirates ID & Medical", ar: "الهوية الإماراتية والفحص الطبي" },
+                    questions: [
+                        { q: { en: "How long does it take to receive the Emirates ID card?", ar: "كم من الوقت يستغرق استلام بطاقة الهوية الإماراتية؟" }, a: { en: "After completing the biometrics and medical test, the Emirates ID card is usually printed and delivered via courier within 5 to 10 working days.", ar: "بعد إكمال القياسات الحيوية والفحص الطبي، عادةً ما يتم طباعة بطاقة الهوية الإماراتية وتسليمها عبر البريد السريع في غضون 5 إلى 10 أيام عمل." } },
+                        { q: { en: "What does the visa medical test include?", ar: "ماذا يشمل الفحص الطبي للتأشيرة؟" }, a: { en: "The standard medical fitness test for a residence visa typically includes a blood test for communicable diseases and a chest X-ray.", ar: "يشمل اختبار اللياقة الطبية القياسي لتأشيرة الإقامة عادةً فحص دم للأمراض المعدية وصورة أشعة للصدر." } },
+                        { q: { en: "What happens if I fail the medical test?", ar: "ماذا يحدث إذا فشلت في الفحص الطبي؟" }, a: { en: "If the medical test results are 'unfit', the residence visa will not be granted. We can advise on the next steps depending on the specific situation.", ar: "إذا كانت نتائج الفحص الطبي 'غير لائق'، فلن يتم منح تأشيرة الإقامة. يمكننا تقديم المشورة بشأن الخطوات التالية اعتمادًا على الموقف المحدد." } },
+                        { q: { en: "Do I need to do a medical test for visa renewal?", ar: "هل أحتاج إلى إجراء فحص طبي لتجديد التأشيرة؟" }, a: { en: "Yes, a medical fitness test is required for most residence visa renewals.", ar: "نعم، اختبار اللياقة الطبية مطلوب لمعظم تجديدات تأشيرة الإقامة." } }
+                    ]
+                }
+            };
+
+            // --- EMAILJS CONFIGURATION ---
+            const emailjsConfig = {
+                account1: {
+                    serviceID: 'service_95o7w9e',
+                    contactTemplateID: 'template_ok13lcp',
+                    reviewTemplateID: 'template_dq6frtp',
+                    publicKey: '5lnle3TTI5LdIG0UE'
+                },
+                account2: {
+                    serviceID: 'service_t0tsqdh',
+                    applicationTemplateID: 'template_lmbj13p',
+                    publicKey: 'uauDrTcxHhyL2TMKb'
+                }
+            };
+
+
+            // --- PAGE TEMPLATES ---
+            const mainContainer = document.querySelector('main');
+            mainContainer.innerHTML = `
+                <section id="home" class="page-section">
+                    <div class="bg-white">
+                        <div class="container mx-auto px-6 py-20 md:py-32">
+                            <div class="text-center">
+                                <div data-animate>
+                                    <h1 class="text-4xl md:text-6xl font-extrabold text-brand-blue-dark leading-tight mb-4" data-key="heroTitle">Fast & Reliable PRO Services in the UAE</h1>
+                                    <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8" data-key="heroSubtitle">Al Masaa Al Baydha Typing Center simplifies all your government transactions, from business setup to visa processing. Let us handle the paperwork, so you can focus on what matters.</p>
+                                    <a href="#" class="nav-link-button bg-brand-accent hover:bg-brand-accent-dark text-white font-bold py-4 px-10 rounded-full text-lg transition duration-300 transform hover:scale-105 inline-block" data-page="services" data-key="heroButton">Explore Our Services</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="py-20 bg-brand-light">
+                        <div class="container mx-auto px-6 text-center">
+                            <h2 class="text-3xl font-bold text-brand-blue-dark mb-12" data-animate data-key="whyUsTitle">Why Choose Us?</h2>
+                            <div class="grid md:grid-cols-3 gap-8 text-center">
+                                <div class="bg-white p-8 rounded-lg shadow-md" data-animate style="transition-delay: 0.1s;">
+                                    <div class="text-5xl mb-4">⏱️</div>
+                                    <h3 class="font-bold text-xl text-brand-blue-dark mb-2" data-key="whyUsFastTitle">Fast & Efficient</h3>
+                                    <p class="text-gray-600" data-key="whyUsFastDesc">We prioritize your time. Our streamlined processes guarantee quick turnaround for all our services.</p>
+                                </div>
+                                <div class="bg-white p-8 rounded-lg shadow-md" data-animate style="transition-delay: 0.2s;">
+                                    <div class="text-5xl mb-4">🤝</div>
+                                    <h3 class="font-bold text-xl text-brand-blue-dark mb-2" data-key="whyUsExpertTitle">Expert & Reliable</h3>
+                                    <p class="text-gray-600" data-key="whyUsExpertDesc">Our team stays up-to-date with all UAE government regulations to ensure your applications are processed smoothly.</p>
+                                </div>
+                                <div class="bg-white p-8 rounded-lg shadow-md" data-animate style="transition-delay: 0.3s;">
+                                    <div class="text-5xl mb-4">💎</div>
+                                    <h3 class="font-bold text-xl text-brand-blue-dark mb-2" data-key="whyUsTransparentTitle">Transparent Pricing</h3>
+                                    <p class="text-gray-600" data-key="whyUsTransparentDesc">No hidden fees. We provide clear and upfront costs for all our services, ensuring complete transparency.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="py-20"><div class="container mx-auto px-6"><div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold text-brand-blue-dark" data-animate data-key="testimonialsTitle">What Our Clients Say</h2></div><div class="grid grid-cols-1 md:grid-cols-3 gap-8"><div class="bg-white p-8 rounded-xl shadow-lg" data-animate style="transition-delay: 0.1s;"><div class="flex text-yellow-400 mb-4">★★★★★</div><p class="text-gray-600 italic mb-4" data-key="testimonial1">"Incredibly fast and professional service. They handled my family's visa renewal without any issues. Highly recommended!"</p><p class="font-bold text-brand-blue-dark">- Ahmed K.</p></div><div class="bg-white p-8 rounded-xl shadow-lg" data-animate style="transition-delay: 0.2s;"><div class="flex text-yellow-400 mb-4">★★★★★</div><p class="text-gray-600 italic mb-4" data-key="testimonial2">"The team is very knowledgeable. They helped me with my trade license renewal and made the process so simple."</p><p class="font-bold text-brand-blue-dark">- Fatima S.</p></div><div class="bg-white p-8 rounded-xl shadow-lg" data-animate style="transition-delay: 0.3s;"><div class="flex text-yellow-400 mb-4">★★★★★</div><p class="text-gray-600 italic mb-4" data-key="testimonial3">"Excellent customer service. They are always available to answer questions and provide updates. Trustworthy and reliable."</p><p class="font-bold text-brand-blue-dark">- John D.</p></div></div></div></div>
+                    <div id="rating-section" class="bg-brand-light py-16"><div class="container mx-auto px-6"><div class="max-w-4xl mx-auto text-center"><h3 class="text-2xl font-bold text-brand-blue-dark" data-animate data-key="ratingTitle">Our Commitment to Excellence</h3><div class="flex items-center justify-center my-4" data-animate style="transition-delay: 0.1s;"><span class="text-3xl font-bold text-yellow-500 mx-2">4.7</span><div class="flex text-2xl text-yellow-400">★★★★<span class="text-yellow-200">★</span></div><span class="mx-2 text-gray-600" data-key="ratingDesc">(Based on 250+ reviews)</span></div><div class="w-full bg-gray-200 rounded-full h-4 my-4 overflow-hidden" data-animate style="transition-delay: 0.2s;"><div id="rating-bar" class="bg-gradient-to-r from-yellow-400 to-orange-500 h-4 rounded-full"></div></div></div></div></div>
+                </section>
+
+                <section id="services" class="page-section py-20">
+                    <div class="container mx-auto px-6">
+                        <div class="text-center mb-16"><h2 class="text-3xl md:text-4xl font-bold text-brand-blue-dark" data-key="servicesTitle">Our Services</h2><p class="text-gray-600 mt-2 text-lg" data-key="servicesSubtitle">Comprehensive solutions for individuals and businesses.</p></div>
+                        <div id="services-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+                    </div>
+                </section>
+
+                <section id="reviews" class="page-section py-20 bg-brand-light">
+                    <div class="container mx-auto px-6"><div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold text-brand-blue-dark" data-key="reviewsTitle">What Our Clients Say</h2><p class="text-gray-600 mt-2" data-key="reviewsSubtitle">We are proud of the relationships we've built.</p></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20"><div class="bg-white p-8 rounded-xl shadow-lg"><div class="flex text-yellow-400 mb-4">★★★★★</div><p class="text-gray-600 italic mb-4" data-key="testimonial1-long">"Incredibly fast and professional service. They handled my family's visa renewal without any issues. Highly recommended!"</p><p class="font-bold text-brand-blue-dark">- Ahmed K.</p></div><div class="bg-white p-8 rounded-xl shadow-lg"><div class="flex text-yellow-400 mb-4">★★★★★</div><p class="text-gray-600 italic mb-4" data-key="testimonial2-long">"The team at Al Masaa Al Baydha is very knowledgeable. They helped me with my trade license renewal and made the process so simple."</p><p class="font-bold text-brand-blue-dark">- Fatima S.</p></div><div class="bg-white p-8 rounded-xl shadow-lg"><div class="flex text-yellow-400 mb-4">★★★★★</div><p class="text-gray-600 italic mb-4" data-key="testimonial3-long">"Excellent customer service. They are always available to answer questions and provide updates. Trustworthy and reliable."</p><p class="font-bold text-brand-blue-dark">- John D.</p></div></div><div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-gray-200"><h3 class="text-2xl font-bold text-brand-blue-dark text-center mb-6" data-key="feedbackTitle">Leave Your Feedback</h3><form id="review-form" class="space-y-4"><div class="text-left"><label for="reviewer-name" class="font-semibold text-gray-700" data-key="formYourName">Your Name</label><input type="text" id="reviewer-name" name="reviewer_name" data-placeholder-key="formYourNamePlaceholder" placeholder="e.g., Mariam A." class="mt-1 w-full bg-gray-100 border-2 border-transparent focus:border-brand-accent rounded-lg py-2 px-4 text-gray-700 focus:outline-none transition duration-300"></div><div class="text-left"><label class="font-semibold text-gray-700" data-key="formYourRating">Your Rating</label><div class="flex space-x-1 mt-1 text-3xl text-gray-300 cursor-pointer" id="star-rating"><span data-value="1">★</span><span data-value="2">★</span><span data-value="3">★</span><span data-value="4">★</span><span data-value="5">★</span></div><input type="hidden" name="rating" id="rating-value"></div><div class="text-left"><label for="review-message" class="font-semibold text-gray-700" data-key="formYourReview">Your Review</label><textarea id="review-message" name="review_message" rows="4" data-placeholder-key="formYourReviewPlaceholder" placeholder="Share your experience with us..." class="mt-1 w-full bg-gray-100 border-2 border-transparent focus:border-brand-accent rounded-lg py-2 px-4 text-gray-700 focus:outline-none transition duration-300"></textarea></div><div class="text-center pt-2"><button type="submit" class="bg-brand-accent hover:bg-brand-accent-dark text-white font-bold py-3 px-8 rounded-full transition duration-300" data-key="formSubmitReview">Submit Review</button></div></form></div></div>
+                </section>
+
+                <section id="faq" class="page-section py-20">
+                    <div class="container mx-auto px-6"><div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold text-brand-blue-dark" data-key="faqTitle">Frequently Asked Questions</h2><p class="text-gray-600 mt-2" data-key="faqSubtitle">Find answers to common questions about our services.</p></div><div id="faq-container" class="max-w-3xl mx-auto space-y-4"></div></div>
+                </section>
+
+                <section id="about" class="page-section py-20 bg-brand-light">
+                    <div class="container mx-auto px-6">
+                        <div class="text-center mb-16" data-animate>
+                            <h2 class="text-4xl md:text-5xl font-extrabold text-brand-blue-dark mb-4" data-key="aboutTitle">Your Partner in Progress</h2>
+                            <p class="text-lg text-gray-600" data-key="aboutSubtitle">Learn more about our journey, our values, and our commitment to you.</p>
+                        </div>
+                        <div class="max-w-4xl mx-auto bg-white p-8 md:p-10 rounded-xl shadow-lg text-left space-y-8" data-animate>
+                            <div>
+                                <h3 class="text-2xl font-bold text-brand-blue-dark mb-3" data-key="aboutJourneyTitle">📖 Our Journey</h3>
+                                <p class="text-gray-700" data-key="aboutJourneyDesc">Al Masaa Al Baydha Typing Center was founded with a clear mission: to eliminate the confusion and complexity associated with government and PRO services in the UAE. We saw a need for a reliable partner that individuals and businesses could turn to for clear, honest, and efficient document processing. From our humble beginnings, we have grown into a trusted name in Sharjah and beyond, helping thousands of clients navigate the intricacies of visa applications, business setups, and document attestations.</p>
+                            </div>
+                            <div class="border-t border-gray-200 pt-8">
+                                <h3 class="text-2xl font-bold text-brand-blue-dark mb-3" data-key="aboutMissionTitle">🎯 Our Mission</h3>
+                                <p class="text-gray-700" data-key="aboutMissionDesc">Our mission is to be the most trusted and efficient service provider, building long-term relationships with our clients through our unwavering commitment to quality, speed, and transparency. We aim to make essential services accessible with ease and confidence.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="contact" class="page-section py-20">
+                    <div class="container mx-auto px-6">
+                        <div class="text-center mb-16"><h2 class="text-3xl md:text-4xl font-bold text-brand-blue-dark" data-key="contactTitle">Get in Touch</h2><p class="text-gray-600 mt-2 text-lg" data-key="contactSubtitle">We're here to help. Reach out to us for any inquiries.</p></div>
+                        <div class="max-w-6xl mx-auto bg-white p-8 md:p-12 rounded-xl shadow-lg">
+                            <div class="grid md:grid-cols-2 gap-12 items-center">
+                                <div class="space-y-8">
+                                    <div><h3 class="text-xl font-bold text-brand-blue flex items-center mb-3"><span class="text-2xl mx-2">📍</span> <span data-key="contactAddressTitle">Our Address</span></h3><p class="text-gray-600">Maleha St - near jeco signal - Industrial Area 10 - Sharjah</p><a href="https://www.google.com/maps/place/AL+MASAA+AL+BAYDHA+DOCUMENTS+TYPING+%26+COPYING/@25.3076303,55.4197102,17z/data=!3m1!4b1!4m6!3m5!1s0x3e5f5f46b033a1c7:0x3b89858c38fbf8d1!8m2!3d25.3076255!4d55.4222851!16s%2Fg%2F11k9jj4p49?entry=ttu" target="_blank" rel="noopener noreferrer" class="inline-block mt-2 text-brand-accent font-semibold hover:underline" data-key="contactDirections">Get Directions &rarr;</a></div>
+                                    <div><h3 class="text-xl font-bold text-brand-blue flex items-center mb-3"><span class="text-2xl mx-2">📞</span> <span data-key="contactPhoneTitle">Phone & WhatsApp</span></h3><p class="text-gray-600">Niyas: <a href="tel:+971556305330" class="hover:text-brand-accent">055 630 5330</a></p><p class="text-gray-600">Landline: <a href="tel:+97165341118" class="hover:text-brand-accent">06 534 1118</a></p><a href="https://api.whatsapp.com/send/?phone=971556305330" target="_blank" rel="noopener noreferrer" class="inline-flex items-center mt-1 text-green-600 hover:text-green-700 font-semibold" data-key="contactWhatsapp">Chat on WhatsApp</a></div>
+                                    <div><h3 class="text-xl font-bold text-brand-blue flex items-center mb-3"><span class="text-2xl mx-2">✉️</span> <span data-key="contactEmailTitle">Email Address</span></h3><a href="mailto:almasaatyping@gmail.com" class="text-gray-600 hover:text-brand-accent transition">almasaatyping@gmail.com</a></div>
+                                </div>
+                                <form id="contact-form" class="space-y-5">
+                                    <div class="text-left"><label for="contact-name" class="font-medium text-gray-700" data-key="formFullName">Full Name</label><input type="text" id="contact-name" name="from_name" required data-placeholder-key="formFullNamePlaceholder" placeholder="Your Name" class="mt-1 w-full border-gray-300 focus:border-brand-accent focus:ring focus:ring-brand-accent focus:ring-opacity-50 rounded-md shadow-sm py-2 px-3"></div>
+                                    <div class="text-left"><label for="contact-email" class="font-medium text-gray-700" data-key="formEmail">Email</label><input type="email" id="contact-email" name="from_email" required data-placeholder-key="formEmailPlaceholder" placeholder="Your Email" class="mt-1 w-full border-gray-300 focus:border-brand-accent focus:ring focus:ring-brand-accent focus:ring-opacity-50 rounded-md shadow-sm py-2 px-3"></div>
+                                    <div class="text-left"><label for="contact-message" class="font-medium text-gray-700" data-key="formMessage">Message</label><textarea id="contact-message" name="message" required rows="4" data-placeholder-key="formMessagePlaceholder" placeholder="How can we help you?" class="mt-1 w-full border-gray-300 focus:border-brand-accent focus:ring focus:ring-brand-accent focus:ring-opacity-50 rounded-md shadow-sm py-2 px-3"></textarea></div>
+                                    <div class="text-right"><button type="submit" class="bg-brand-accent hover:bg-brand-accent-dark text-white font-bold py-3 px-8 rounded-full transition duration-300" data-key="formSendMessage">Send Message</button></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="service-details" class="page-section py-20">
+                    <div id="service-detail-content" class="container mx-auto px-6"></div>
+                </section>
+
+                <section id="apply-service" class="page-section py-20 bg-brand-light">
+                    <div class="container mx-auto px-6 max-w-2xl">
+                        <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                            <h2 class="text-3xl md:text-4xl font-bold text-brand-blue-dark text-center" data-key="applyTitle">Apply for a Service</h2>
+                            <p class="text-gray-600 mt-2 text-center mb-8" data-key="applySubtitle">Fill out the form below and we will get back to you shortly.</p>
+                            <form id="application-form" class="space-y-6">
+                                <div class="text-left"><label for="apply-name" class="font-semibold text-gray-700" data-key="formFullName">Full Name</label><input type="text" id="apply-name" name="from_name" required class="mt-1 w-full border-gray-300 focus:border-brand-accent focus:ring focus:ring-brand-accent focus:ring-opacity-50 rounded-md shadow-sm py-3 px-4"></div>
+                                <div class="text-left"><label for="apply-email" class="font-semibold text-gray-700" data-key="formEmail">Email Address</label><input type="email" id="apply-email" name="from_email" required class="mt-1 w-full border-gray-300 focus:border-brand-accent focus:ring focus:ring-brand-accent focus:ring-opacity-50 rounded-md shadow-sm py-3 px-4"></div>
+                                <div class="text-left"><label for="apply-phone" class="font-semibold text-gray-700" data-key="formPhone">Phone Number</label><input type="tel" id="apply-phone" name="from_phone" required class="mt-1 w-full border-gray-300 focus:border-brand-accent focus:ring focus:ring-brand-accent focus:ring-opacity-50 rounded-md shadow-sm py-3 px-4"></div>
+                                <div class="text-left"><label for="apply-service-select" class="font-semibold text-gray-700" data-key="formService">Service</label><select id="apply-service-select" name="service_name" required class="mt-1 w-full border-gray-300 focus:border-brand-accent focus:ring focus:ring-brand-accent focus:ring-opacity-50 rounded-md shadow-sm py-3 px-4"></select></div>
+                                <div class="text-center pt-4"><button type="submit" class="bg-brand-accent hover:bg-brand-accent-dark text-white font-bold py-3 px-12 rounded-full transition duration-300 text-lg" data-key="formSubmitApplication">Submit Application</button></div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            `;
+
+            // --- DYNAMIC CONTENT POPULATION ---
+            
+            // Populate full services list
+            const servicesListContainer = document.getElementById('services-list');
+            if(servicesListContainer) {
+                servicesListContainer.innerHTML = ''; // Clear existing
+                for (const id in servicesData) {
+                    const service = servicesData[id];
+                    const serviceCard = `
+                        <div class="service-card bg-white p-6 rounded-xl flex flex-col text-center" data-animate>
+                            <div class="text-5xl mb-4">${service.emoji}</div>
+                            <h3 class="text-lg font-bold text-brand-blue-dark mb-2 flex-grow" data-service-title="${id}">${service.title.en}</h3>
+                            <div class="mt-auto pt-4 space-y-2">
+                                <button class="nav-link-button w-full bg-brand-blue-light text-brand-blue-dark font-semibold py-2 px-4 rounded-full" data-page="service-details" data-serviceid="${id}" data-key="btnViewDetails">View Details</button>
+                                <button class="nav-link-button w-full bg-brand-accent text-white font-semibold py-2 px-4 rounded-full" data-page="apply-service" data-serviceid="${id}" data-key="btnApplyNow">Apply Now</button>
+                            </div>
+                        </div>`;
+                    servicesListContainer.innerHTML += serviceCard;
+                }
+            }
+
+            // Populate service dropdown in application form
+            const serviceSelect = document.getElementById('apply-service-select');
+            if(serviceSelect) {
+                serviceSelect.innerHTML = `<option value="" disabled selected data-key="formSelectService">Select a service...</option>`; // Clear existing
+                for (const id in servicesData) {
+                     serviceSelect.innerHTML += `<option value="${servicesData[id].title.en}" data-service-option="${id}">${servicesData[id].title.en}</option>`;
+                }
+            }
+
+
+            // --- NAVIGATION AND PAGE LOGIC ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            function setActiveLink(pageId) {
+                document.querySelectorAll('#desktop-nav .nav-link').forEach(link => {
+                    link.classList.toggle('active', link.dataset.page === pageId);
+                });
+            }
+
+            function showPage(pageId, serviceId = null, isInitialLoad = false) {
+                document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+                
+                const targetSection = document.getElementById(pageId);
+                if (targetSection) {
+                    if (pageId === 'service-details' && serviceId) {
+                        renderServiceDetails(serviceId);
+                    }
+                    if (pageId === 'apply-service' && serviceId) {
+                        const currentLang = document.documentElement.lang;
+                        document.getElementById('apply-service-select').value = servicesData[serviceId].title[currentLang];
+                    }
+                    targetSection.classList.add('active');
+                    
+                    const animationObserver = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('is-visible');
+                                animationObserver.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.1 });
+
+                    const animatedElements = targetSection.querySelectorAll('[data-animate]');
+                    animatedElements.forEach(el => animationObserver.observe(el));
+                }
+
+                setActiveLink(pageId.split('-')[0]);
+                mobileMenu.classList.add('hidden');
+                if (!isInitialLoad) window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
+            // Initial Load
+            showPage('home', null, true);
+
+            document.body.addEventListener('click', function(e) {
+                const navTarget = e.target.closest('.nav-link, .nav-link-button');
+                if (navTarget) {
+                    e.preventDefault();
+                    const pageId = navTarget.dataset.page;
+                    const serviceId = navTarget.dataset.serviceid;
+                    showPage(pageId, serviceId);
+                }
+
+                const faqTarget = e.target.closest('.faq-question');
+                if(faqTarget) {
+                    const answer = faqTarget.nextElementSibling;
+                    const icon = faqTarget.querySelector('svg');
+                    const isOpening = !answer.style.maxHeight || answer.style.maxHeight === '0px';
+                    if (isOpening) {
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                        answer.style.paddingTop = '1rem';
+                        answer.style.paddingBottom = '1.25rem';
+                        icon.style.transform = 'rotate(180deg)';
+                    } else {
+                        answer.style.maxHeight = '0px';
+                        answer.style.paddingTop = '0';
+                        answer.style.paddingBottom = '0';
+                        icon.style.transform = 'rotate(0deg)';
+                    }
+                }
+            });
+            
+            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+            
+            // --- FORM SUBMISSIONS ---
+            function handleFormSubmit(formId, config, templateId, successMessage) {
+                const form = document.getElementById(formId);
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const submitButton = form.querySelector('button[type="submit"]');
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Sending...';
+
+                    if (!config || !config.serviceID || !config.publicKey || !templateId) {
+                         alert('EmailJS configuration is missing for this form.');
+                         submitButton.disabled = false;
+                         submitButton.textContent = 'Submit';
+                         return;
+                    }
+                    
+                    emailjs.init({ publicKey: config.publicKey });
+                    emailjs.sendForm(config.serviceID, templateId, this)
+                        .then(() => {
+                            alert(successMessage);
+                            form.reset();
+                            submitButton.disabled = false;
+                            if (formId === 'application-form') {
+                                submitButton.textContent = 'Submit Application';
+                            } else if (formId === 'review-form') {
+                                document.querySelectorAll('#star-rating span').forEach(s => s.style.color = '#D1D5DB');
+                                submitButton.textContent = 'Submit Review';
+                            } else {
+                                submitButton.textContent = 'Send Message';
+                            }
+                        }, (error) => {
+                            alert('Failed to send message. Error: ' + JSON.stringify(error));
+                            submitButton.disabled = false;
+                            if (formId === 'application-form') {
+                                submitButton.textContent = 'Submit Application';
+                            } else if (formId === 'review-form') {
+                                submitButton.textContent = 'Submit Review';
+                            } else {
+                                submitButton.textContent = 'Send Message';
+                            }
+                        });
+                });
+            }
+
+            handleFormSubmit('contact-form', emailjsConfig.account1, emailjsConfig.account1.contactTemplateID, 'Thank you for your message! We will get back to you soon.');
+            handleFormSubmit('review-form', emailjsConfig.account1, emailjsConfig.account1.reviewTemplateID, 'Thank you for your review!');
+            handleFormSubmit('application-form', emailjsConfig.account2, emailjsConfig.account2.applicationTemplateID, 'Your application has been submitted successfully! We will contact you shortly.');
+
+            // Star Rating Logic
+            const stars = document.querySelectorAll('#star-rating span');
+            const ratingValueInput = document.getElementById('rating-value');
+            stars.forEach(star => {
+                star.addEventListener('click', () => {
+                    ratingValueInput.value = star.dataset.value;
+                    stars.forEach(s => s.style.color = s.dataset.value <= star.dataset.value ? '#FBBF24' : '#D1D5DB');
+                });
+            });
+
+            // Rating Bar Animation on Scroll
+            const ratingSection = document.getElementById('rating-section');
+            const ratingBar = document.getElementById('rating-bar');
+            const ratingObserver = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    ratingBar.style.width = '94%'; // 4.7 out of 5 is 94%
+                    ratingObserver.unobserve(ratingSection);
+                }
+            }, { threshold: 0.5 });
+
+            if(ratingSection) {
+                ratingObserver.observe(ratingSection);
+            }
+
+            // --- TRANSLATION LOGIC ---
+            const translations = {
+                brandName: { en: "Al Masaa Al Baydha", ar: "المساء البيضاء" },
+                navHome: { en: "Home", ar: "الرئيسية" },
+                navServices: { en: "Services", ar: "الخدمات" },
+                navReviews: { en: "Reviews", ar: "الآراء" },
+                navFAQ: { en: "FAQ", ar: "الأسئلة الشائعة" },
+                navAbout: { en: "About Us", ar: "من نحن" },
+                navContact: { en: "Contact", ar: "اتصل بنا" },
+                navHomeMobile: { en: "Home", ar: "الرئيسية" },
+                navServicesMobile: { en: "Services", ar: "الخدمات" },
+                navReviewsMobile: { en: "Reviews", ar: "الآراء" },
+                navFAQMobile: { en: "FAQ", ar: "الأسئلة الشائعة" },
+                navAboutMobile: { en: "About Us", ar: "من نحن" },
+                navContactMobile: { en: "Contact", ar: "اتصل بنا" },
+                heroTitle: { en: "Fast & Reliable PRO Services in the UAE", ar: "خدمات مندوب سريعة وموثوقة في الإمارات" },
+                heroSubtitle: { en: "Al Masaa Al Baydha Typing Center simplifies all your government transactions, from business setup to visa processing. Let us handle the paperwork, so you can focus on what matters.", ar: "مركز المساء البيضاء للطباعة يبسط جميع معاملاتك الحكومية، من تأسيس الأعمال إلى معالجة التأشيرات. دعنا نتولى الإجراءات الورقية، حتى تتمكن من التركيز على ما يهم." },
+                heroButton: { en: "Explore Our Services", ar: "اكتشف خدماتنا" },
+                whyUsTitle: { en: "Why Choose Us?", ar: "لماذا تختارنا؟" },
+                whyUsFastTitle: { en: "Fast & Efficient", ar: "سريع وفعال" },
+                whyUsFastDesc: { en: "We prioritize your time. Our streamlined processes guarantee quick turnaround for all our services.", ar: "نحن نعطي الأولوية لوقتك. تضمن عملياتنا المبسطة إنجازًا سريعًا لجميع خدماتنا." },
+                whyUsExpertTitle: { en: "Expert & Reliable", ar: "خبير وموثوق" },
+                whyUsExpertDesc: { en: "Our team stays up-to-date with all UAE government regulations to ensure your applications are processed smoothly.", ar: "يبقى فريقنا على اطلاع دائم بجميع اللوائح الحكومية في الإمارات لضمان معالجة طلباتك بسلاسة." },
+                whyUsTransparentTitle: { en: "Transparent Pricing", ar: "أسعار شفافة" },
+                whyUsTransparentDesc: { en: "No hidden fees. We provide clear and upfront costs for all our services, ensuring complete transparency.", ar: "لا توجد رسوم خفية. نقدم تكاليف واضحة ومقدمة لجميع خدماتنا، مما يضمن الشفافية الكاملة." },
+                testimonialsTitle: { en: "What Our Clients Say", ar: "ماذا يقول عملاؤنا" },
+                testimonial1: { en: `"Incredibly fast and professional service. They handled my family's visa renewal without any issues. Highly recommended!"`, ar: `"خدمة سريعة واحترافية بشكل لا يصدق. لقد تعاملوا مع تجديد تأشيرة عائلتي دون أي مشاكل. موصى به للغاية!"` },
+                testimonial2: { en: `"The team is very knowledgeable. They helped me with my trade license renewal and made the process so simple."`, ar: `"الفريق على دراية كبيرة. لقد ساعدوني في تجديد رخصتي التجارية وجعلوا العملية بسيطة للغاية."` },
+                testimonial3: { en: `"Excellent customer service. They are always available to answer questions and provide updates. Trustworthy and reliable."`, ar: `"خدمة عملاء ممتازة. إنهم متاحون دائمًا للإجابة على الأسئلة وتقديم التحديثات. جديرون بالثقة ويمكن الاعتماد عليهم."` },
+                ratingTitle: { en: "Our Commitment to Excellence", ar: "التزامنا بالتميز" },
+                ratingDesc: { en: "(Based on 250+ reviews)", ar: "(بناءً على أكثر من 250 تقييمًا)" },
+                servicesTitle: { en: "Our Services", ar: "خدماتنا" },
+                servicesSubtitle: { en: "Comprehensive solutions for individuals and businesses.", ar: "حلول شاملة للأفراد والشركات." },
+                btnViewDetails: { en: "View Details", ar: "عرض التفاصيل" },
+                btnApplyNow: { en: "Apply Now", ar: "قدم الآن" },
+                reviewsTitle: { en: "What Our Clients Say", ar: "ماذا يقول عملاؤنا" },
+                reviewsSubtitle: { en: "We are proud of the relationships we've built.", ar: "نحن فخورون بالعلاقات التي بنيناها." },
+                testimonial1long: { en: `"Incredibly fast and professional service. They handled my family's visa renewal without any issues. Highly recommended!"`, ar: `"خدمة سريعة واحترافية بشكل لا يصدق. لقد تعاملوا مع تجديد تأشيرة عائلتي دون أي مشاكل. موصى به للغاية!"` },
+                testimonial2long: { en: `"The team at Al Masaa Al Baydha is very knowledgeable. They helped me with my trade license renewal and made the process so simple."`, ar: `"الفريق في المساء البيضاء على دراية كبيرة. لقد ساعدوني في تجديد رخصتي التجارية وجعلوا العملية بسيطة للغاية."` },
+                testimonial3long: { en: `"Excellent customer service. They are always available to answer questions and provide updates. Trustworthy and reliable."`, ar: `"خدمة عملاء ممتازة. إنهم متاحون دائمًا للإجابة على الأسئلة وتقديم التحديثات. جديرون بالثقة ويمكن الاعتماد عليهم."` },
+                feedbackTitle: { en: "Leave Your Feedback", ar: "اترك رأيك" },
+                formYourName: { en: "Your Name", ar: "اسمك" },
+                formYourNamePlaceholder: { en: "e.g., Mariam A.", ar: "مثال: مريم أ." },
+                formYourRating: { en: "Your Rating", ar: "تقييمك" },
+                formYourReview: { en: "Your Review", ar: "رأيك" },
+                formYourReviewPlaceholder: { en: "Share your experience with us...", ar: "شاركنا تجربتك..." },
+                formSubmitReview: { en: "Submit Review", ar: "إرسال الرأي" },
+                faqTitle: { en: "Frequently Asked Questions", ar: "الأسئلة الشائعة" },
+                faqSubtitle: { en: "Find answers to common questions about our services.", ar: "ابحث عن إجابات للأسئلة الشائعة حول خدماتنا." },
+                aboutTitle: { en: "Your Partner in Progress", ar: "شريكك في التقدم" },
+                aboutSubtitle: { en: "Learn more about our journey, our values, and our commitment to you.", ar: "اعرف المزيد عن رحلتنا وقيمنا والتزامنا تجاهك." },
+                aboutJourneyTitle: { en: "📖 Our Journey", ar: "📖 رحلتنا" },
+                aboutJourneyDesc: { en: "Al Masaa Al Baydha Typing Center was founded with a clear mission: to eliminate the confusion and complexity associated with government and PRO services in the UAE. We saw a need for a reliable partner that individuals and businesses could turn to for clear, honest, and efficient document processing. From our humble beginnings, we have grown into a trusted name in Sharjah and beyond, helping thousands of clients navigate the intricacies of visa applications, business setups, and document attestations.", ar: "تأسس مركز المساء البيضاء للطباعة بمهمة واضحة: القضاء على الارتباك والتعقيد المرتبطين بالخدمات الحكومية وخدمات المندوبين في الإمارات. رأينا حاجة إلى شريك موثوق يمكن للأفراد والشركات اللجوء إليه لمعالجة المستندات بشكل واضح وصادق وفعال. من بداياتنا المتواضعة، نمونا لنصبح اسمًا موثوقًا به في الشارقة وخارجها، مساعدين آلاف العملاء في التعامل مع تعقيدات طلبات التأشيرة وتأسيس الأعمال وتصديق المستندات." },
+                aboutMissionTitle: { en: "🎯 Our Mission", ar: "🎯 مهمتنا" },
+                aboutMissionDesc: { en: "Our mission is to be the most trusted and efficient service provider, building long-term relationships with our clients through our unwavering commitment to quality, speed, and transparency. We aim to make essential services accessible with ease and confidence.", ar: "مهمتنا هي أن نكون مزود الخدمة الأكثر ثقة وكفاءة، وبناء علاقات طويلة الأمد مع عملائنا من خلال التزامنا الراسخ بالجودة والسرعة والشفافية. نهدف إلى جعل الخدمات الأساسية متاحة بسهولة وثقة." },
+                contactTitle: { en: "Get in Touch", ar: "تواصل معنا" },
+                contactSubtitle: { en: "We're here to help. Reach out to us for any inquiries.", ar: "نحن هنا للمساعدة. تواصل معنا لأي استفسارات." },
+                contactAddressTitle: { en: "Our Address", ar: "عنواننا" },
+                contactDirections: { en: "Get Directions &rarr;", ar: "احصل على الاتجاهات &larr;" },
+                contactPhoneTitle: { en: "Phone & WhatsApp", ar: "الهاتف والواتساب" },
+                contactWhatsapp: { en: "Chat on WhatsApp", ar: "الدردشة على الواتساب" },
+                contactEmailTitle: { en: "Email Address", ar: "عنوان البريد الإلكتروني" },
+                formFullName: { en: "Full Name", ar: "الاسم الكامل" },
+                formFullNamePlaceholder: { en: "Your Name", ar: "اسمك" },
+                formEmail: { en: "Email", ar: "البريد الإلكتروني" },
+                formEmailPlaceholder: { en: "Your Email", ar: "بريدك الإلكتروني" },
+                formMessage: { en: "Message", ar: "الرسالة" },
+                formMessagePlaceholder: { en: "How can we help you?", ar: "كيف يمكننا مساعدتك؟" },
+                formSendMessage: { en: "Send Message", ar: "إرسال الرسالة" },
+                applyTitle: { en: "Apply for a Service", ar: "تقدم بطلب للحصول على خدمة" },
+                applySubtitle: { en: "Fill out the form below and we will get back to you shortly.", ar: "املأ النموذج أدناه وسنعاود الاتصال بك قريبًا." },
+                formPhone: { en: "Phone Number", ar: "رقم الهاتف" },
+                formService: { en: "Service", ar: "الخدمة" },
+                formSelectService: { en: "Select a service...", ar: "اختر خدمة..." },
+                formSubmitApplication: { en: "Submit Application", ar: "تقديم الطلب" },
+                backToServices: { en: "&larr; Back to Services", ar: "العودة إلى الخدمات &rarr;" },
+                detailsTimeframe: { en: "Timeframe", ar: "الإطار الزمني" },
+                detailsRequirements: { en: "Requirements", ar: "المتطلبات" },
+                detailsSteps: { en: "Process Steps", ar: "خطوات العملية" },
+                detailsApplyBtn: { en: "Apply For This Service", ar: "تقدم بطلب لهذه الخدمة" },
+            };
+
+            let currentLang = 'en';
+
+            const langSwitchers = [document.getElementById('lang-switcher'), document.getElementById('lang-switcher-mobile')];
+
+            function setLanguage(lang) {
+                currentLang = lang;
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                document.body.classList.toggle('lang-ar', lang === 'ar');
+
+                // Update static text
+                document.querySelectorAll('[data-key]').forEach(element => {
+                    const key = element.getAttribute('data-key');
+                    if (translations[key]) {
+                        element.textContent = translations[key][lang];
+                    }
+                });
+
+                // Update placeholders
+                document.querySelectorAll('[data-placeholder-key]').forEach(element => {
+                    const key = element.getAttribute('data-placeholder-key');
+                    if (translations[key]) {
+                        element.placeholder = translations[key][lang];
+                    }
+                });
+
+                // Update dynamically generated content
+                updateDynamicContent(lang);
+
+                // Update switcher button text
+                langSwitchers.forEach(switcher => {
+                    if (switcher) {
+                        switcher.textContent = lang === 'en' ? 'العربية' : 'English';
+                    }
+                });
+            }
+
+            function updateDynamicContent(lang) {
+                // Update service list titles
+                document.querySelectorAll('[data-service-title]').forEach(element => {
+                    const id = element.getAttribute('data-service-title');
+                    element.textContent = servicesData[id].title[lang];
+                });
+
+                // Update service select options
+                document.querySelectorAll('[data-service-option]').forEach(element => {
+                    const id = element.getAttribute('data-service-option');
+                    element.textContent = servicesData[id].title[lang];
+                    element.value = servicesData[id].title[lang];
+                });
+
+                // Update FAQ content
+                renderFAQs();
+
+                // If on service details page, re-render it
+                const detailsPage = document.getElementById('service-details');
+                if (detailsPage && detailsPage.classList.contains('active')) {
+                    const serviceId = document.querySelector('#service-detail-content button').dataset.serviceid;
+                    if(serviceId) {
+                        renderServiceDetails(serviceId);
+                    }
+                }
+            }
+            
+            function renderFAQs() {
+                const lang = currentLang;
+                const faqContainer = document.getElementById('faq-container');
+                if (!faqContainer) return;
+                faqContainer.innerHTML = '';
+                for (const categoryKey in faqData) {
+                    const category = faqData[categoryKey];
+                    let categoryHtml = `<div class="mb-8" data-animate><h3 class="text-2xl font-bold text-brand-accent mb-4 border-b-2 border-brand-accent pb-2">${category.title[lang]}</h3><div class="space-y-4">`;
+                    category.questions.forEach(faq => {
+                        categoryHtml += `
+                            <div class="bg-white rounded-lg shadow-sm">
+                                <button class="faq-question w-full text-left p-5 flex justify-between items-center">
+                                    <span class="font-semibold text-lg text-brand-blue-dark">${faq.q[lang]}</span>
+                                    <svg class="w-6 h-6 transform transition-transform duration-300 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </button>
+                                <div class="faq-answer"><p class="text-gray-600 pb-5 px-5">${faq.a[lang]}</p></div>
+                            </div>`;
+                    });
+                    categoryHtml += `</div></div>`;
+                    faqContainer.innerHTML += categoryHtml;
+                }
+            }
+
+            function renderServiceDetails(serviceId) {
+                const lang = currentLang;
+                const service = servicesData[serviceId];
+                const contentEl = document.getElementById('service-detail-content');
+                if (!contentEl || !service) return;
+
+                contentEl.innerHTML = `
+                    <button class="nav-link-button mb-8 inline-flex items-center text-brand-accent font-semibold" data-page="services" data-serviceid="${serviceId}">${translations.backToServices[lang]}</button>
+                    <div class="bg-white p-8 md:p-12 rounded-xl shadow-lg">
+                        <h1 class="text-4xl font-extrabold text-brand-blue-dark mb-4">${service.emoji} ${service.title[lang]}</h1>
+                        <p class="text-lg text-gray-600 mb-8">${service.description[lang]}</p>
+                        <div class="grid md:grid-cols-3 gap-8">
+                            <div class="bg-brand-light p-6 rounded-lg">
+                                <h3 class="font-bold text-xl text-brand-blue-dark mb-2">${translations.detailsTimeframe[lang]}</h3>
+                                <p class="text-gray-700">${service.time[lang]}</p>
+                            </div>
+                            <div class="bg-brand-light p-6 rounded-lg col-span-2">
+                                <h3 class="font-bold text-xl text-brand-blue-dark mb-2">${translations.detailsRequirements[lang]}</h3>
+                                <ul class="list-disc list-inside text-gray-700 space-y-1">${service.requirements[lang].map(r => `<li>${r}</li>`).join('')}</ul>
+                            </div>
+                        </div>
+                        <div class="mt-8 bg-brand-light p-6 rounded-lg">
+                            <h3 class="font-bold text-xl text-brand-blue-dark mb-2">${translations.detailsSteps[lang]}</h3>
+                            <ul class="list-decimal list-inside text-gray-700 space-y-2">${service.steps[lang].map(s => `<li>${s}</li>`).join('')}</ul>
+                        </div>
+                        <div class="text-center mt-12">
+                            <button class="nav-link-button bg-brand-accent hover:bg-brand-accent-dark text-white font-bold py-3 px-12 rounded-full text-lg transition" data-page="apply-service" data-serviceid="${serviceId}">${translations.detailsApplyBtn[lang]}</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            langSwitchers.forEach(switcher => {
+                if (switcher) {
+                    switcher.addEventListener('click', () => {
+                        const newLang = currentLang === 'en' ? 'ar' : 'en';
+                        setLanguage(newLang);
+                    });
+                }
+            });
+
+            // Set initial language
+            setLanguage('en');
+        });
+    </script>
+
+</body>
+</html>
